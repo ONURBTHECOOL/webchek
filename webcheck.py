@@ -51,6 +51,20 @@ def setup(command):
         checkFrequency = int(input("Enter new check frequency\n"))
     else:
         print("cmd not valid")
+def compare():
+    global new_content
+    global old_content
+    if new_content == old_content:
+        print("Changes Have Been Made!!!!")
+    else:
+        print("No changes!!!!")
+def check():
+    global checkFrequency
+    global check_amount
+    for i in range(check_amount):
+        sleep(checkFrequency)
+        print("checking...")
+        compare()
 
 def interface():
     cmd = input()
@@ -73,24 +87,14 @@ def interface():
         setup(setup_cmd)
         interface()
     if len(cmd) > 22:
-        print("I see you Leo!")
+        print("no")
+    if cmd == "check":
+        check()
+        interface()
     else:
         print("cmd not valid")
         interface()
-def compare():
-    global new_content
-    global old_content
-    if new_content == old_content:
-        print("Changes Have Been Made!!!!")
-    else:
-        print("No changes!!!!")
-def check():
-    global checkFrequency
-    global check_amount
-    for i in range(check_amount):
-        sleep(checkFrequency)
-        print("checking...")
-        compare()
+
 
 print("welcome to the website checker")
 interface()
