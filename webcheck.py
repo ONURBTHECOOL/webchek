@@ -23,7 +23,7 @@ def fetch(address):
         except requests.exceptions.ConnectionError:
             print("Sorry, The Website You Tried To Access Dose Not Exist!!")
     except requests.exceptions.MissingSchema:
-        print("You are stupid to thing that you can put a url with no https:// thing on it!")
+        print("You are stupid to think that you can put a url with no https:// on it!")
 
 
 def store(old):
@@ -101,7 +101,7 @@ def interface():
         setup(setup_cmd)
         interface()
     if len(cmd) > 22:
-        print("no")
+        print("cmd not valid")
     if cmd == "check":
         check()
         interface()
