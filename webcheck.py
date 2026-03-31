@@ -1,10 +1,14 @@
 import requests
 from time import sleep
 
-url = "https://rotators.biz"
-urlHome = f"{url}/index.html"
-checkFrequency = 20
+url = "https://www.sardinesclub.org"
+new_content = ""
 old_content = ""
+url_home = f"{url}/Sardines%20Official%20Website%20About%20Us"
+checkFrequency = 20
+# noinspection PyRedeclaration
+old_content = ""
+# noinspection PyRedeclaration
 new_content = ""
 check_amount = 20
 
@@ -17,7 +21,7 @@ def fetch(address):
             else:
                 print("error")
         except requests.exceptions.ConnectionError:
-            print("Sorry, The Website You Tryed To Accsess Dose Not Exist!!")
+            print("Sorry, The Website You Tried To Access Dose Not Exist!!")
     except requests.exceptions.MissingSchema:
         print("You are stupid to thing that you can put a url with no https:// thing on it!")
 
@@ -26,7 +30,7 @@ def store(old):
     global new_content
     global old_content
     if not old:
-        new_content = fetch(url)
+        new_content = fetch(url_home)
         if new_content == "error":
             print("Error while connecting to site.\nCheck your internet connection.")
         else:
@@ -34,37 +38,47 @@ def store(old):
             ask = input("Type Y to see the page content, or N to continue.")
             if ask == "Y":
                 print(new_content)
-            else:
-                pass
     else:
-        old_content = fetch(urlHome)
-        print("store success")
-        print(old_content)
+        old_content = fetch(url_home)
+        if old_content == "error":
+            print("Error while connecting to site.\nCheck your internet connection.")
+        else:
+            print("Successfully connected to site.")
+            ask = input("Type Y to see the page content, or N to continue.\n")
+            if ask == "Y":
+                print(old_content)
 
 
 def setup(command):
     global checkFrequency
     global url
+    global url_home
     if command == "change-url":
-        url = input("Enter new url\n")
+        url = input("Enter new url\nsetup:")
     elif command == "change-check-frequency":
-        checkFrequency = int(input("Enter new check frequency\n"))
+        checkFrequency = int(input("Enter new check frequency\nsetup:"))
+    elif command == "change-home-directory":
+        prompt = "Enter new home directory\nsetup:"
+        url_home = f"{url}{input(prompt)}"
     else:
         print("cmd not valid")
 def compare():
     global new_content
     global old_content
-    if new_content == old_content:
-        print("Changes Have Been Made!!!!")
+    if new_content == "" or old_content == "":
+        print("Please fetch content first.")
     else:
-        print("No changes!!!!")
+        if new_content == old_content:
+            print("Changes Have Been Made!!!!")
+        else:
+            print("No changes!!!!")
 def check():
     global checkFrequency
     global check_amount
-    for i in range(check_amount):
-        sleep(checkFrequency)
+    for i in range(1, check_amount):
         print("checking...")
         compare()
+        sleep(checkFrequency)
 
 def interface():
     cmd = input()
@@ -83,7 +97,7 @@ def interface():
         print("Thank You For Your Baldness\n")
         interface()
     if cmd == "setup":
-        setup_cmd = input("What would you like to configure?\n")
+        setup_cmd = input("What would you like to configure?\nsetup:")
         setup(setup_cmd)
         interface()
     if len(cmd) > 22:
