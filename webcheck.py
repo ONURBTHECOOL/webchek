@@ -14,17 +14,18 @@ check_amount = 20
 
 def fetch(address):
     try:
-        try:
-            output = requests.get(address)
-            if output.status_code == 200:
-                return output.text
-            else:
-                print("error")
-        except requests.exceptions.ConnectionError:
-            print("Sorry, The Website You Tried To Access Does Not Exist!!")
+        output = requests.get(address)
+        if output.status_code == 200:
+            return output.text
+        else:
+            print("error")
+            return "error"
+    except requests.exceptions.ConnectionError:
+        print("Sorry, The Website You Tried To Access Does Not Exist!!")
+        return "error"
     except requests.exceptions.MissingSchema:
         print("You are stupid to think that you can put a url with no https:// on it! Go add one with setup:change-url")
-        interface(setup_is_true=False)
+        return "error"
 
 
 def store(old):
@@ -64,7 +65,7 @@ def setup(command):
         url_home = f"{url}{input(prompt)}"
     else:
         print("cmd not valid")
-        interface(True)
+
 def compare():
     global new_content
     global old_content
@@ -83,45 +84,29 @@ def check():
         compare()
         sleep(checkFrequency)
 
-def interface(setup_is_true):
-    cmd = input()
-    if setup_is_true:
-        setup_cmd = input("What would you like to configure?\nsetup:")
-        setup_is_true(setup_cmd)
-    if cmd == "fetch-old":
-        store(True)
-        interface(setup_is_true=False)
-    if cmd == "fetch-new":
-        store(False)
-        interface(setup_is_true=False)
-    if cmd == "quit":
-        exit()
-    if cmd == "show-new":
-        print()
-        interface(setup_is_true=False)
-    if cmd == "bald":
-        print("Thank You For Your Baldness\n")
-        interface(setup_is_true=False)
+def interface(cmd):
     if cmd == "setup":
         setup_cmd = input("What would you like to configure?\nsetup:")
-        setup_is_true(setup_cmd)
-        interface(setup_is_true=False)
-    if len(cmd) > 22:
-        print("cmd not valid")
-    if cmd == "check":
+        setup(setup_cmd)
+    elif cmd == "fetch-old":
+        store(True)
+    elif cmd == "fetch-new":
+        store(False)
+    elif cmd == "quit":
+        exit()
+    elif cmd == "show-new":
+        print(new_content)
+    elif cmd == "bald":
+        print("Thank You For Your Baldness\n")
+    elif cmd == "check":
         check()
-        interface(setup_is_true=False)
-    if "setup" in cmd:
-        cmd.replace("setup", "")
-        setup_is_true(cmd)
-        interface(setup_is_true=False)
     else:
         print("cmd not valid")
-        interface(setup_is_true=False)
 
 
 try:
-    print("welcome to the website checker")
-    interface(setup_is_true=False)
+    print("welcome to the website checker\n")
+    while True:
+        interface(input(""))
 except KeyboardInterrupt:
     print("Dont leave me!")
